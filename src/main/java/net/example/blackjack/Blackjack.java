@@ -1,5 +1,7 @@
 package net.example.blackjack;
 
+import java.util.Random;
+
 public class Blackjack {
 	final Deck deck;
 	final Player human, dealer;
@@ -11,7 +13,7 @@ public class Blackjack {
 	}
 
 	public void play() {
-		deck.shuffle();
+		deck.shuffle(new Random());
 		deck.deal(2, human, dealer);
 	}
 
