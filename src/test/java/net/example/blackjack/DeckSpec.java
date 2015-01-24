@@ -10,14 +10,24 @@ public class DeckSpec {
 	@Test
 	public void has_four_of_each_rank_when_created() {
 		Deck d = new Deck();
+
 		assertHasFourOfEachSuit(d);
 	}
 
+	/**
+	 * Tests should, in general, have three sections/steps:
+	 * 
+	 * Arrange
+	 * Act
+	 * Assert
+	 */
 	@Test
 	public void has_four_of_each_rank_after_shuffling() {
-		Deck d = new Deck();
-		d.shuffle(new Random());
-		assertHasFourOfEachSuit(d);
+		Deck d = new Deck(); // arrange
+
+		d.shuffle(new Random()); // do the action under test
+
+		assertHasFourOfEachSuit(d); // assert what should have happened
 	}
 
 	@Test
@@ -38,6 +48,7 @@ public class DeckSpec {
 	
 	@Test
 	public void shuffling_assumes_all_cards_are_returned_to_deck() {
+		// these mean the same thing, but it is nice to say so
 		can_be_reshuffled_to_return_another_52_cards();
 	}
 
@@ -74,10 +85,14 @@ public class DeckSpec {
 	public void shuffling_causes_cards_to_be_in_a_randomized_order() {
 		Deck d = new Deck();
 		Random r = new Random();
-		r.setSeed(42);
+		r.setSeed(42); // predictable sequence of "random numbers"
 		
 		d.shuffle(r);
 
+		// Assert that the deck is indeed randomized given the above sequence of random numbers
+		// This makes the test "stable" while still proving that shuffle mixes the cards
+		// Note that since we're using the same "random sequence" every time the test runs, the
+		// resulting card order in the deck will be fixed as well. 
 		assertEquals(Rank.Three, d.cards[0].rank);
 		assertEquals(Rank.Six, d.cards[1].rank);
 		assertEquals(Rank.Jack, d.cards[2].rank);
@@ -86,12 +101,12 @@ public class DeckSpec {
 	}
 
 	private void assertHasFourOfEachSuit(Deck d) {
-		int rankSeen[] = new int[13];
+		int rankSeen[] = new int[13]; // 13 different ranks
 
 		for (int i = 0; i < 52; i++) {
 			Card c = d.getTopCard();
-			Rank r = c.rank;
-			int n = r.ordinal();
+			Rank r = c.rank; 
+			int n = r.ordinal(); // Java enumerations "come with" a function named ordinal which returns 0..# items in enum
 			rankSeen[n]++;
 		}
 
